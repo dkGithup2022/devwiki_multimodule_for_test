@@ -1,0 +1,18 @@
+plugins {
+    id 'org.springframework.boot'
+    id 'java-test-fixtures'
+}
+
+apply plugin: "java-library"
+
+description("domain-popularity module")
+
+bootJar { enabled = false }
+jar { enabled = true }
+
+dependencies {
+
+    implementation(project(":devwiki-common"))
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation(project(":devwiki-common"))
+}

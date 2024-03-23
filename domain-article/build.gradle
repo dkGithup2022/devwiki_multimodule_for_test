@@ -1,0 +1,21 @@
+plugins {
+    id 'org.springframework.boot'
+    id 'java-test-fixtures'
+}
+
+apply plugin: "java-library"
+
+description("domain-article module")
+
+bootJar { enabled = false }
+jar { enabled = true }
+
+dependencies {
+
+    implementation(project(":devwiki-common"))
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.springframework.boot:spring-boot-starter")
+    implementation ('org.springframework.boot:spring-boot-starter-jdbc')
+    implementation(project(":infra-article"))
+    testImplementation(project(":devwiki-common"))
+}

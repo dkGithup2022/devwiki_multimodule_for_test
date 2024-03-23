@@ -1,0 +1,5 @@
+description("app-search-api module")
+
+dependencies {
+
+}

@@ -1,0 +1,9 @@
+server:
+  port: 8002
+  threads:
+    max: 200
+    min-spare: 100
+
+spring:
+  application:
+    name: devwiki-web-api
