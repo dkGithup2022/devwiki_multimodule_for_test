@@ -39,20 +39,11 @@ def javaProjects = [ // Java 로 작성된 소스코드에 대한 공통작업 �
                      project(":client-mysql"),
 
                     //domain
-                     project(":domain-article"),
-                     project(":domain-bookmark"),
-                     project(":domain-comment"),
-                     project(":domain-popularity"),
-                     project(":domain-reaction"),
-                     project(":domain-user"),
+                     project(":core-domain"),
+                     project(":core-domain-service"),
 
-                    //infra
-                     project(":infra-article"),
-                     project(":infra-bookmark"),
-                     project(":infra-comment"),
-                     project(":infra-popularity"),
-                     project(":infra-reaction"),
-                     project(":infra-user"),
+                     //infra
+                     project(":core-infra-rdms"),
 
 
                     //async task
