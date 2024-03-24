@@ -28,15 +28,15 @@ allprojects { // 모든 프로젝트에 반영되는 부분
 
 def javaProjects = [ // Java 로 작성된 소스코드에 대한 공통작업 선언
                      //service
-                     project(":app-async-batch"),
-                     project(":app-es-syncbatch"),
-                     project(":app-search-api"),
-                     project(":app-web-api"),
+                     project(":app:app-async-batch"),
+                     project(":app:app-es-syncbatch"),
+                     project(":app:app-search-api"),
+                     project(":app:app-web-api"),
 
                      // client
-                     project(":client-redis"),
-                     project(":client-feign"),
-                     project(":client-mysql"),
+                     project(":client:client-redis"),
+                     project(":client:client-feign"),
+                     project(":client:client-mysql"),
 
                     //domain
                      project(":core-domain"),
@@ -47,8 +47,8 @@ def javaProjects = [ // Java 로 작성된 소스코드에 대한 공통작업 �
 
 
                     //async task
-                     project(":redis-async-consumer"),
-                     project(":redis-async-provider")
+                     project(":queue:redis-async-consumer"),
+                     project(":queue:redis-async-provider")
 ]
 configure(javaProjects) {
     apply plugin: "java"

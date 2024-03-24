@@ -2,7 +2,30 @@
 ## 데브위키 멀티모듈 개선 시나리오
 
 
-### AS-IS 의 문제점
+### 멀티 모듈 적용 목표 
+
+ - 프로젝트를 이루는 각 서브 프로젝에서의  도메인 , client 모듈을 공통사용 할 수 있게 한다.
+
+ - 필요한 부분만 가져갈 수 있도록 설계한다.
+   - 도메인을 가져갈 때, db 커넥션에 대한 설정은 안가져가도 된다 .
+   
+
+### 개선된 멀티모듈 분류 
+
+- client 
+- core-infra 
+-  - 도메인 별 분류 없음 
+- core-domain 
+-  - pure java 유지 
+- - 도메인 별 분류 없음 , 패키지로만 분류
+- core-domain-service 
+- -   각 앱에서 사용할 서비스 의 모음
+- -   도메인 별 분류 없음 , 패키지로만 분류 
+- app
+-  - 프로젝트에 속하는 배포 될 각 서브 프로젝트들 .
+
+
+### AS-IS 의 문제점 (이전 커밋)
 
 1. 각 도메인 별 별도의 domain, infra를 가짐.
     - 아직 도메인간 분리가 성숙하지 않았음 ( 변경의 여지가 있다)
@@ -97,4 +120,136 @@
 
 
 
+## 구현 
 
+### 의존성 
+
+#### client-mysql 공통  의존성 
+
+
+```gradle
+plugins {
+    id 'org.springframework.boot'
+    id 'java-test-fixtures'
+}
+
+apply plugin: "java-library"
+
+description("client-mysql module")
+
+bootJar { enabled = false }
+jar { enabled = true }
+
+dependencies {
+    implementation(project(":devwiki-common"))
+    api ("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    runtimeOnly("com.h2database:h2")
+    implementation ("com.mysql:mysql-connector-j")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    // query dsl
+    api ("com.querydsl:querydsl-core")
+    api ("com.querydsl:querydsl-jpa")
+    annotationProcessor("com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa")
+    annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+    annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+}
+
+```
+
+
+#### core-infra-rdms 의존성 
+
+```java
+
+plugins {
+    id 'org.springframework.boot'
+    id 'java-test-fixtures'
+}
+
+apply plugin: "java-library"
+
+description("core-infra-rdms module")
+
+bootJar { enabled = false }
+jar { enabled = true }
+
+dependencies {
+    implementation(project(":devwiki-common"))
+    implementation(project(":client:client-mysql"))
+    api ("org.springframework.boot:spring-boot-starter-data-jpa")
+
+}
+
+
+```
+
+#### core-domain
+
+```
+plugins {
+    id 'org.springframework.boot'
+    id 'java-test-fixtures'
+}
+
+apply plugin: "java-library"
+
+description("core-domain module")
+
+bootJar { enabled = false }
+jar { enabled = true }
+
+dependencies {
+    implementation(project(":devwiki-common"))
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+```
+
+#### core-domain-service 
+
+
+```
+plugins {
+    id 'java'
+}
+
+group = 'com.dk0124'
+version = 'unspecified'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation(project(":devwiki-common"))
+    implementation(project(":core-domain"))
+    implementation(project(":core-infra-rdms"))
+
+    implementation('org.springframework:spring-context')
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+```
+
+#### app-web-api
+
+```
+description("app-search-api module")
+
+dependencies {
+
+    implementation(project(":core-domain"))
+    implementation(project(":core-domain-service"))
+
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+
+}
+```

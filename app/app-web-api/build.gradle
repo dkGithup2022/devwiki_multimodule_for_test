@@ -1,0 +1,11 @@
+description("app-search-api module")
+
+dependencies {
+
+    implementation(project(":core-domain"))
+    implementation(project(":core-domain-service"))
+
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+
+}
