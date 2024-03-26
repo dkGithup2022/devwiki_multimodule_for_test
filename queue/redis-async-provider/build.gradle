@@ -12,7 +12,7 @@ jar { enabled = true }
 
 dependencies {
 
-    implementation(project(":devwiki-common"))
+    implementation(project(":common:devwiki-common"))
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation(project(":devwiki-common"))
+    testImplementation(project(":common:devwiki-common"))
 }

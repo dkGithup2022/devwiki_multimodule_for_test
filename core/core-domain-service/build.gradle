@@ -10,9 +10,9 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":devwiki-common"))
-    implementation(project(":core-domain"))
-    implementation(project(":core-infra-rdms"))
+    implementation(project(":common:devwiki-common"))
+    implementation(project(":core:core-domain"))
+    implementation(project(":core:core-infra-rdms"))
 
     implementation('org.springframework:spring-context')
     testImplementation platform('org.junit:junit-bom:5.9.1')
